@@ -7,8 +7,8 @@ const users = [
   {
     username: "Pepito",
     password: "pepitoAmigo_123",
-    prenom: "Pepito",
-    nom: "Amigo",
+    firstname: "Pepito",
+    lastname: "Amigo",
     email: "pepito@gmail.com",
   },
 ];
@@ -27,8 +27,8 @@ async function generateSeed() {
         return {
           username: user.username,
           password: hashedPassword, // return the same user but with hashed password
-          prenom: user.prenom,
-          nom: user.nom,
+          firstname: user.firstname,
+          lastname: user.lastname,
           email: user.email,
         };
       })
