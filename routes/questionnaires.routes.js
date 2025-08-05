@@ -1,14 +1,17 @@
-const express = require('express');
+// routes/questionnaire.routes.js
+import express from 'express';
+import Questionnaire from '../models/questionnaire.model.js';
+
 const router = express.Router();
-const controller = require('../controllers/questionnaire.controller');
 
-// Créer un nouveau quiz
-router.post('/', controller.createQuestionnaire);
+// GET tous les questionnaires
+router.get('/', async (req, res) => {
+  try {
+    const quizzes = await Questionnaire.find();
+    res.json(quizzes);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+});
 
-// Récupérer tous les quiz
-router.get('/', controller.getAllQuestionnaires);
-
-// Récupérer un quiz par ID
-router.get('/:id', controller.getQuestionnaireById);
-
-module.exports = router;
+export default router;
