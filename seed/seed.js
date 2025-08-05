@@ -11,6 +11,13 @@ const users = [
     lastname: "Amigo",
     email: "pepito@gmail.com",
   },
+  {
+    username: "Burito",
+    password: "Bur1t@987_",
+    firstname: "Burito",
+    lastname: "Pulpito",
+    email: "Burito@gmail.com",
+  },
 ];
 
 async function generateSeed() {
