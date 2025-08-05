@@ -2,6 +2,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import { connectDB } from "./database/connectDb.js";
+import router from "./routes/router.js";
 
 // Chargement le fichier .env
 dotenv.config();
@@ -19,6 +20,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API Quizz !");
 });
+
+app.use("", router);
 
 // Démarrage du serveur une fois connecté à MongoDB
 app.listen(PORT, async () => {
