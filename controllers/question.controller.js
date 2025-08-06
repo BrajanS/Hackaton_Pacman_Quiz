@@ -13,7 +13,7 @@ export const createQuestion = async (req, res) => {
           return res.status(400).json({ message: "Il doit y avoir exactement une option correcte." });
         }
 
-        const newQuestion = new Question({ text, options });
+        const newQuestion = new Question({ text, options, createdBy: req.userId });
         await newQuestion.save();
 
         res.status(201).json(newQuestion);
@@ -64,5 +64,27 @@ export const updateQuestion = async (req,res) => {
     }   catch (error) {
         res.status(500).json({ message: "Erreur lors de la modification.", error: error.message });
     }
-    
+};
+
+export const deleteQuestion = async (req, res) => {
+    try {
+        const questionId = req.params.id;
+
+        const question = await Question.findById(questionId);
+
+        if (!question) {
+            return res.status(404).json({ message: "Question non trouvée." });
+        }
+
+        if (question.createdBy.toString() !== req.userId) {
+            return res.status(403).json({ message: "Non autorisé à supprimer cette question."});
+        }
+
+        await question.deleteOne();
+
+        res.status(200).json({ message: "question supprimé avec succès."});
+    } catch (error) {
+        res.status(500).json({ message: "Erreur lors de la supression."});
+    }
+
 };
