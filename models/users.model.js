@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    email: { type: String, required: true }, // To add: E-mail Regex to verify "abc@example.com"
+    email: { type: String, required: true, unique: true }, // To add: E-mail Regex to verify "abc@example.com"
     quizs: { type: Array, default: [] },
   },
   { timestamps: true }
