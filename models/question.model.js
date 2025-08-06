@@ -1,14 +1,11 @@
-import mongoose from "mongoose";
-
-const optionSchema = new mongoose.Schema({
-  label: String,
-  isCorrect: Boolean,
-});
+import mongoose from 'mongoose';
 
 const questionSchema = new mongoose.Schema({
   text: { type: String, required: true },
-  options: [optionSchema],
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  choices: [{ label: String, text: String }],
+  correctAnswers: [String],
+  explanation: String,
 });
 
-export default mongoose.model("Question", questionSchema);
+const Question = mongoose.model('Question', questionSchema);
+export default Question;

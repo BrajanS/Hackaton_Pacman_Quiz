@@ -1,10 +1,12 @@
 // ✅ Importation des modules (dotenv toujours en premier)
 import dotenv from "dotenv";
-dotenv.config(); // Chargement du fichier .env
-
 import express from "express";
 import { connectDB } from "./database/connectDb.js";
 import router from "./routes/router.js";
+import cookieParser from 'cookie-parser';
+
+
+dotenv.config(); // Chargement du fichier .env
 
 // ✅ Création de l'application Express
 const app = express();
@@ -14,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 
 // ✅ Middleware pour analyser les requêtes JSON
 app.use(express.json());
+app.use(cookieParser());
 
 // ✅ Route test pour vérifier que l'API fonctionne
 app.get("/", (req, res) => {

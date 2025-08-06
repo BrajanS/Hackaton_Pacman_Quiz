@@ -1,17 +1,18 @@
-// routes/questionnaire.routes.js
 import express from 'express';
-import Questionnaire from '../models/questionnaire.model.js';
+import {
+  createQuestionnaire,
+  getAllQuestionnaires,
+  getQuestionnaireById,
+  updateQuestionnaireById,
+  deleteQuestionnaireById,
+} from '../controllers/questionnaire.controller.js';
 
 const router = express.Router();
 
-// GET tous les questionnaires
-router.get('/', async (req, res) => {
-  try {
-    const quizzes = await Questionnaire.find();
-    res.json(quizzes);
-  } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', error: err.message });
-  }
-});
+router.post('/', createQuestionnaire);            // POST /questionnaires
+router.get('/', getAllQuestionnaires);            // GET /questionnaires
+router.get('/:id', getQuestionnaireById);         // GET /questionnaires/:id
+router.put('/:id', updateQuestionnaireById);      // PUT /questionnaires/:id
+router.delete('/:id', deleteQuestionnaireById);   // DELETE /questionnaires/:id
 
 export default router;
