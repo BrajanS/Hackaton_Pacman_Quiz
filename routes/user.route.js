@@ -5,10 +5,11 @@ import {
   loginController,
   registerController,
 } from "../controllers/user.controller.js";
+import { authentificationMiddleware } from "../middleware/authentification.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/users", getUsersController);
+userRouter.get("/users", authentificationMiddleware, getUsersController);
 userRouter.get("/users/:id", getUserByIdController);
 
 userRouter.post("/register", registerController);

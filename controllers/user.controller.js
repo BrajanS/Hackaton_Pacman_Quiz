@@ -1,6 +1,8 @@
 import UserModel from "../models/users.model.js";
 import mongoose from "mongoose";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
+import { registerUserSchema } from "../validators/register.validator.js";
 
 const getUsersController = async (_, res) => {
   try {
@@ -41,6 +43,7 @@ const getUserByIdController = async (req, res) => {
 
 const registerController = async (req, res) => {
   try {
+    const registerData = req.body;
   } catch (err) {
     res.status(500).send("Something went wrong while trying to register");
   }
@@ -50,8 +53,8 @@ const loginController = async (req, res) => {
   try {
     const requestedLogin = req.body;
     const userExists = await UserModel.findOne({
-      username: requestedLogin.username,
-    });
+      email: requestedLogin.email,
+    }); // Search User by his Email
     if (!userExists) {
       res.status(404).send("This user doesn't exist");
     } else {
@@ -60,9 +63,33 @@ const loginController = async (req, res) => {
         userExists.password,
         requestedLogin.password
       );
-      //   console.info("ArgonVerif:", verifyPassword);
-      //   "Logged-in successfully !"
-      res.status(200).json({ ArgonVerif: verifyPassword });
+      if (verifyPassword) {
+        // #region EXPIRE TIME CONFIGS FOR SYNCRONIZING: TOKEN AND COOKIE TIME
+        // Value is the time Integer that depends on Duration: ["m" minutes, "h" hours]
+        const intervalTypes = ["m", "h"];
+        const expireTime = { value: 2, duration: intervalTypes[1] }; // -> 2h
+        const cookieTimeMultiplier =
+          expireTime.duration === intervalTypes[1]
+            ? 60 * 60 * 1000 // 1 hour multiplier
+            : 60 * 1000; // 1 minute multiplier
+        // #endregion --------------------------------------------------------
+        // prettier-ignore
+        const token = jwt.sign({ id: userExists._id}, process.env.JWT_SECRET_KEY, { expiresIn: `${expireTime.value}${expireTime.duration}` }); // Signs a Token
+        // Makes a secure cookie 'jwt' containing the Token
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "strict",
+          maxAge: expireTime.value * cookieTimeMultiplier,
+        });
+        res.status(200).json({
+          message: "Logged-in successfully !",
+        });
+      } else {
+        res.status(400).json({
+          message: "Can't login, the Email or the Password is wrong",
+        });
+      }
     }
   } catch (err) {
     res.status(500).send("Something went wrong while trying to login");

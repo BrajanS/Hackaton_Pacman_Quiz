@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import { connectDB } from "./database/connectDb.js";
 import router from "./routes/router.js";
+import cookieParser from "cookie-parser";
 
 // Chargement le fichier .env
 dotenv.config();
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
+app.use(cookieParser());
 
 // Route principale pour tester si l'API fonctionne
 app.get("/", (req, res) => {
