@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API Quizz !");
 });
 
-app.use("", router);
+app.use("/", router);
 
 // Démarrage du serveur une fois connecté à MongoDB
 app.listen(PORT, async () => {
