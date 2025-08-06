@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   createQuestionnaire,
-  getAllQuestionnaires,
+  getAllQuestionnaire,
   getQuestionnaireById,
   updateQuestionnaireById,
   deleteQuestionnaireById,
@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.post('/', createQuestionnaire);            // POST /questionnaires
-router.get('/', getAllQuestionnaires);            // GET /questionnaires
+router.get('/', getAllQuestionnaire);            // GET /questionnaires
 router.get('/:id', getQuestionnaireById);         // GET /questionnaires/:id
 router.put('/:id', updateQuestionnaireById);      // PUT /questionnaires/:id
 router.delete('/:id', deleteQuestionnaireById);   // DELETE /questionnaires/:id
