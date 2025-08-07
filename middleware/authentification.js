@@ -45,7 +45,7 @@ const authentificationMiddleware = (req, res, next) => {
     } else {
       const tokenVerif = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if (tokenVerif) {
-        req.userId = tokenVerif;
+        req.userId = tokenVerif.id;
         next();
       } else {
         res.status(401).send("Invalid Token, failed Verification");
