@@ -1,7 +1,7 @@
 import "dotenv/config";
 import argon2 from "argon2";
 import { connectDB, disconnectDB } from "../database/connectDb.js";
-import UserModel from "../models/user.model.js";
+import UserModel from "../models/users.model.js";
 
 const users = [
   {
