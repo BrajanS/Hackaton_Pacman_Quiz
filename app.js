@@ -1,6 +1,7 @@
 // ✅ Importation des modules (dotenv toujours en premier)
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import { connectDB } from "./database/connectDb.js";
 import router from "./routes/router.js";
 import cookieParser from "cookie-parser";
@@ -12,6 +13,13 @@ const app = express();
 
 // ✅ Définition du port (fallback sur 3000 si non défini dans .env)
 const PORT = process.env.PORT || 3000;
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // ✅ Middleware pour analyser les requêtes JSON
 app.use(express.json());
