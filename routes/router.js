@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.use("/", questionRouter);
 router.use("/", userRouter);
+router.use("/", questionnaireRouter);
 
 export default router;

@@ -3,13 +3,31 @@ import Questionnaire from '../models/questionnaire.model.js';
 // POST /questionnaire
 export const createQuestionnaire = async (req, res) => {
   try {
-    const newQuiz = new Questionnaire(req.body);
+    const { title, description, tags, questions } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ message: "Le titre est obligatoire." });
+    }
+
+    const newQuiz = new Questionnaire({
+      title,
+      description,
+      tags,
+      questions,
+      createdBy: req.userId, // middleware JWT
+    });
+
     const savedQuiz = await newQuiz.save();
     res.status(201).json(savedQuiz);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la création du questionnaire', error });
+    console.error("Erreur création questionnaire:", error);
+    res.status(500).json({
+      message: "Erreur lors de la création du questionnaire",
+      error: error.message || error,
+    });
   }
 };
+
 
 // GET /questionnaire
 export const getAllQuestionnaire = async (req, res) => {

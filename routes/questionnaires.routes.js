@@ -7,13 +7,15 @@ import {
   deleteQuestionnaireById,
 } from '../controllers/questionnaire.controller.js';
 
+import { authentificationMiddleware } from "../middleware/authentification.js";
+
 const router = express.Router();
 
-router.post('/', createQuestionnaire);            // POST /api/questionnaires
-router.get('/', getAllQuestionnaire);             // GET /api/questionnaires
-router.get('/:id', getQuestionnaireById);         // GET /api/questionnaires/:id
-router.put('/:id', updateQuestionnaireById);      // PUT /api/questionnaires/:id
-router.delete('/:id', deleteQuestionnaireById);   // DELETE /api/questionnaires/:id
+router.post("/questionnaires", authentificationMiddleware, createQuestionnaire);            // POST /api/questionnaires
+router.get("/questionnaires", authentificationMiddleware, getAllQuestionnaire);             // GET /api/questionnaires
+router.get("/questionnaires/:id", getQuestionnaireById);                                     // GET /api/questionnaires/:id
+router.put("/questionnaires/:id", authentificationMiddleware, updateQuestionnaireById);      // PUT /api/questionnaires/:id
+router.delete("/questionnaires/:id", authentificationMiddleware, deleteQuestionnaireById);   // DELETE /api/questionnaires/:id
 
 
 export default router;
