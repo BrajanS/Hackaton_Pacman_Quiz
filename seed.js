@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import User from "./models/user.model.js";
+import UserModel  from "./models/users.model.js";
 import Question from "./models/question.model.js";
 import Questionnaire from "./models/questionnaire.model.js";
 
@@ -14,7 +14,7 @@ const seedData = async () => {
     console.log("✅ Connexion MongoDB établie");
 
     // Nettoyage des collections
-    await User.deleteMany();
+    await UserModel.deleteMany();
     await Question.deleteMany();
     await Questionnaire.deleteMany();
 
