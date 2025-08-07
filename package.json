@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
+    "start": "node app.js",
     "seed": "node ./seed/seed.js"
   },
   "dependencies": {

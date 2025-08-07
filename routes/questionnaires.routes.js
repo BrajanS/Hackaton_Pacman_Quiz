@@ -7,13 +7,13 @@ import {
   deleteQuestionnaireById,
 } from '../controllers/questionnaire.controller.js';
 
-const router = express.Router();
+const questionnaireRouter = express.Router();
 
-router.post('/', createQuestionnaire);            // POST /api/questionnaires
-router.get('/', getAllQuestionnaire);             // GET /api/questionnaires
-router.get('/:id', getQuestionnaireById);         // GET /api/questionnaires/:id
-router.put('/:id', updateQuestionnaireById);      // PUT /api/questionnaires/:id
-router.delete('/:id', deleteQuestionnaireById);   // DELETE /api/questionnaires/:id
+questionnaireRouter.post('/', createQuestionnaire);            // POST /api/questionnaires
+questionnaireRouter.get('/', getAllQuestionnaire);             // GET /api/questionnaires
+questionnaireRouter.get('/:id', getQuestionnaireById);         // GET /api/questionnaires/:id
+questionnaireRouter.put('/:id', updateQuestionnaireById);      // PUT /api/questionnaires/:id
+questionnaireRouter.delete('/:id', deleteQuestionnaireById);   // DELETE /api/questionnaires/:id
 
 
-export default router;
+export default questionnaireRouter;
