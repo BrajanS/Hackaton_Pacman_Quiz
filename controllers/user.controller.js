@@ -2,7 +2,6 @@ import UserModel from "../models/users.model.js";
 import mongoose from "mongoose";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
-import { registerUserSchema } from "../validators/register.validator.js";
 
 const getUsersController = async (_, res) => {
   try {
@@ -26,8 +25,9 @@ const getUserByIdController = async (req, res) => {
     const userId = req.params.id;
     if (mongoose.Types.ObjectId.isValid(userId)) {
       const user = await UserModel.findById(userId).lean();
-      if (user) {
-        res.status(200).json(user);
+      const { password, ...safeUser } = user; // Removes the password
+      if (safeUser) {
+        res.status(200).json(safeUser);
       } else {
         res.status(404).send("Couldn't find the user");
       }
@@ -44,6 +44,44 @@ const getUserByIdController = async (req, res) => {
 const registerController = async (req, res) => {
   try {
     const registerData = req.body;
+    const usernameExists = await UserModel.exists({
+      username: registerData.username,
+    });
+    const emailExists = await UserModel.exists({
+      email: registerData.email,
+    });
+    if (usernameExists && emailExists) {
+      return res
+        .status(409)
+        .send(
+          "Username and Email already exist, you cannot register as a existing user"
+        );
+    } else if (usernameExists) {
+      return res
+        .status(409)
+        .send(
+          "Username already exists, you cannot register as a existing user"
+        );
+    } else if (emailExists) {
+      return res
+        .status(409)
+        .send("Email already exists, you cannot register as a existing user");
+    } else {
+      const { password, email, ...userData } = registerData;
+      const hashedPassword = await argon2.hash(password, {
+        type: argon2.argon2id,
+      });
+      if (hashedPassword) {
+        const createUser = await UserModel.create({
+          ...userData,
+          email: email.toLowerCase(),
+          password: hashedPassword,
+        });
+        res.status(201).json(createUser);
+      } else {
+        res.status(500).send("Couldn't hash the password");
+      }
+    }
   } catch (err) {
     res.status(500).send("Something went wrong while trying to register");
   }
@@ -96,9 +134,23 @@ const loginController = async (req, res) => {
   }
 };
 
+const logoutController = async (_, res) => {
+  try {
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+    });
+    res.status(200).send("Logged Out successfully");
+  } catch (err) {
+    res.status(500).send("Something went wrong, couldn't Logout ...");
+  }
+};
+
 export {
   getUsersController,
   getUserByIdController,
   registerController,
   loginController,
+  logoutController,
 };

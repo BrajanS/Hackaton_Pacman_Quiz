@@ -1,4 +1,40 @@
 import jwt from "jsonwebtoken";
+import {
+  registerUserSchema,
+  loginUserSchema,
+} from "../validators/entry.validator.js";
+
+const registerValidator = async (req, res, next) => {
+  try {
+    const { value: joiVal, error: joiErr } = registerUserSchema.validate(
+      req.body
+    );
+    if (!joiErr) {
+      req.body = joiVal;
+      next();
+    } else {
+      res.status(400).json({ Error: joiErr.message });
+    }
+  } catch (err) {
+    console.error("Something wrong happened while validating register:", err);
+    res.status(500).send("Something wrong happened while validating register");
+  }
+};
+
+const loginValidator = async (req, res, next) => {
+  try {
+    const { value: joiVal, error: joiErr } = loginUserSchema.validate(req.body);
+    if (!joiErr) {
+      req.body = joiVal;
+      next();
+    } else {
+      res.status(400).json({ Error: joiErr.message });
+    }
+  } catch (err) {
+    console.error("Something wrong happened while validating login:", err);
+    res.status(500).send("Something wrong happened while validating login");
+  }
+};
 
 const authentificationMiddleware = (req, res, next) => {
   try {
@@ -25,4 +61,4 @@ const authentificationMiddleware = (req, res, next) => {
   }
 };
 
-export { authentificationMiddleware };
+export { authentificationMiddleware, registerValidator, loginValidator };

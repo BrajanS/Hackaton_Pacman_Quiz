@@ -16,7 +16,7 @@ const users = [
     password: "Bur1t@987_",
     firstname: "Burito",
     lastname: "Pulpito",
-    email: "Burito@gmail.com",
+    email: "burito@gmail.com",
   },
 ];
 
@@ -36,7 +36,7 @@ async function generateSeed() {
           password: hashedPassword, // return the same user but with hashed password
           firstname: user.firstname,
           lastname: user.lastname,
-          email: user.email,
+          email: user.email.toLowerCase(),
         };
       })
     );
