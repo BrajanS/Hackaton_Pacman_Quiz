@@ -49,7 +49,7 @@ Pour les apprenants, cela permet :
 
 ---
 
-## Endpoints de l'API – Questions (par Nuno)
+## Endpoints de l'API – Questions 
 
 Toutes les routes sont protégées par JWT.
 
@@ -87,18 +87,16 @@ Toutes les routes sont protégées par JWT.
 
 - Utiliser le token (cookie) dans les requêtes suivantes
 
----
 
-## À compléter par l'équipe
 
-### Endpoints Utilisateurs (Brajan)
+### Endpoints Utilisateurs 
 
 | Méthode | Endpoint  | Description          |
 | ------- | --------- | -------------------- |
 | POST    | /register | Créer un utilisateur |
 | POST    | /login    | Se connecter         |
 
-### Endpoints Questionnaires (Will)
+### Endpoints Questionnaires 
 
 | Méthode | Endpoint                           | Description                               |
 | ------- | ---------------------------------- | ----------------------------------------- |
