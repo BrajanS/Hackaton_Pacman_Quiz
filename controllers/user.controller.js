@@ -91,7 +91,7 @@ const loginController = async (req, res) => {
   try {
     const requestedLogin = req.body;
     const userExists = await UserModel.findOne({
-      email: requestedLogin.email,
+      email: requestedLogin.email.toLowerCase(),
     }); // Search User by his Email
     if (!userExists) {
       res.status(404).send("This user doesn't exist");
