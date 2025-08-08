@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-import UserModel  from "./models/users.model.js";
+import mongoose from "mongoose";
+import UserModel from "./models/users.model.js";
 import Question from "./models/question.model.js";
 import Questionnaire from "./models/questionnaire.model.js";
 
 dotenv.config();
 
-const MONGODB_URI ="mongodb://localhost:27017/hackaton_quiz";
+const MONGODB_URI = "mongodb://localhost:27017/hackaton_quiz";
 
 const seedData = async () => {
   try {
@@ -14,12 +14,12 @@ const seedData = async () => {
     console.log("✅ Connexion MongoDB établie");
 
     // Nettoyage des collections
-    await UserModel.deleteMany();
+    // await UserModel.deleteMany();
     await Question.deleteMany();
     await Questionnaire.deleteMany();
 
     // ➕ 1 utilisateur
-    const user = new User({
+    /*const user = new User({
       username: "admin01",
       firstName: "Alice",
       lastName: "Martin",
@@ -27,7 +27,11 @@ const seedData = async () => {
       password: "hashedPassword123" // en vrai : hashé !
     });
     await user.save();
-    console.log("👤 Utilisateur inséré :", user.username);
+    console.log("👤 Utilisateur inséré :", user.username);*/
+
+    const users = await UserModel.find({});
+    const user = users[0];
+    console.log("First user", user);
 
     // ➕ 2 questions créées par l'utilisateur
     const question1 = new Question({
@@ -35,9 +39,9 @@ const seedData = async () => {
       options: [
         { label: "A", isCorrect: true },
         { label: "B", isCorrect: false },
-        { label: "C", isCorrect: false }
+        { label: "C", isCorrect: false },
       ],
-      createdBy: user._id
+      createdBy: user._id,
     });
 
     const question2 = new Question({
@@ -45,9 +49,9 @@ const seedData = async () => {
       options: [
         { label: "A", isCorrect: false },
         { label: "B", isCorrect: true },
-        { label: "C", isCorrect: false }
+        { label: "C", isCorrect: false },
       ],
-      createdBy: user._id
+      createdBy: user._id,
     });
 
     await question1.save();
@@ -58,7 +62,7 @@ const seedData = async () => {
     const questionnaire = new Questionnaire({
       title: "Le français vous salue",
       questions: [question1._id, question2._id],
-      createdBy: user._id
+      createdBy: user._id,
     });
 
     await questionnaire.save();
